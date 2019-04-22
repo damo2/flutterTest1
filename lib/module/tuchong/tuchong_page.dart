@@ -57,7 +57,7 @@ class _TuchongPageState extends BaseWidgetState<TuchongPage> {
           _buildUser(bean.site),
           _buildImage(bean.images[0]),
           _buildTags(bean.tags),
-          _buildLikeComment(bean.favorites, bean.comments),
+          _buildLikeComment(bean.favorites, bean.comments, bean.publishedAt),
         ],
       ),
     );
@@ -147,19 +147,28 @@ class _TuchongPageState extends BaseWidgetState<TuchongPage> {
     );
   }
 
-  Widget _buildLikeComment(int favoritesNum, int commentNum) {
+  Widget _buildLikeComment(int favoritesNum, int commentNum, String time) {
     return Container(
-      margin: EdgeInsets.only(top: 8.0, left: 12.0),
+      margin: EdgeInsets.only(top: 8.0, left: 12.0, right: 12.0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          Text('共', style: TextStyle(fontSize: 12.0)),
-          Text('$favoritesNum',
-              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w500)),
-          Text('人喜欢', style: TextStyle(fontSize: 12.0)),
-          Text('  $commentNum',
-              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w500)),
-          Text('人评论', style: TextStyle(fontSize: 12.0)),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Text('共', style: TextStyle(fontSize: 12.0)),
+              Text('$favoritesNum',
+                  style:
+                      TextStyle(fontSize: 12.0, fontWeight: FontWeight.w500)),
+              Text('人喜欢', style: TextStyle(fontSize: 12.0)),
+              Text('  $commentNum',
+                  style:
+                      TextStyle(fontSize: 12.0, fontWeight: FontWeight.w500)),
+              Text('人评论', style: TextStyle(fontSize: 12.0)),
+            ],
+          ),
+          Text(time, style: TextStyle(fontSize: 12.0)),
         ],
       ),
     );
