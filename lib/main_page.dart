@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/common/package_common.dart';
 import 'package:flutter_demo/module/douban/douban_page.dart';
+import 'package:flutter_demo/module/tuchong/tuchong_page.dart';
 
 class MainPage extends StatelessWidget {
   @override
@@ -71,7 +72,7 @@ class MainPageState extends State<MainPageWidget> {
 
     _pageList = [
       DoubanPage(),
-      DoubanPage(),
+      TuchongPage(),
       DoubanPage(),
     ];
   }
