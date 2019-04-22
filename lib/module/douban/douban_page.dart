@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_demo/common/package_common.dart';
-import 'package:flutter_demo/douban/bean/movie_in_bean.dart';
-import 'package:flutter_demo/douban/page/movie_subject_page.dart';
-import 'package:flutter_demo/douban/utils/const_douban.dart';
+import 'package:flutter_demo/module/douban/bean/movie_in_bean.dart';
+import 'package:flutter_demo/module/douban/page/movie_subject_page.dart';
+import 'package:flutter_demo/module/douban/utils/const_douban.dart';
 
 
 class DoubanPage extends StatefulWidget {
@@ -20,7 +20,7 @@ class _DoubanPageState extends State<DoubanPage> {
   }
 
   void requestMovieIn() {
-    HttpUtil.get(ApiDouban.Movie_In_Theaters).then((value) {
+    HttpUtil.get(ApiDouban.getMovieInTheaters(0,100)).then((value) {
       setState(() {
         _movieInBean = MovieInBean.fromJson(value);
       });

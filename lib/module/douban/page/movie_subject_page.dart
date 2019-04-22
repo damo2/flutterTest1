@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_demo/common/package_common.dart';
-import 'package:flutter_demo/douban/bean/movie_comment_bean.dart' as comment;
-import 'package:flutter_demo/douban/bean/movie_in_bean.dart' as movieIn;
-import 'package:flutter_demo/douban/bean/movie_subject_bean.dart';
-import 'package:flutter_demo/douban/page/movie_photo_page.dart';
-import 'package:flutter_demo/douban/page/video_paly_page.dart';
-import 'package:flutter_demo/douban/utils/const_douban.dart';
+import 'package:flutter_demo/module/douban/bean/movie_comment_bean.dart' as comment;
+import 'package:flutter_demo/module/douban/bean/movie_in_bean.dart' as movieIn;
+import 'package:flutter_demo/module/douban/bean/movie_subject_bean.dart';
+import 'package:flutter_demo/module/douban/page/movie_photo_page.dart';
+import 'package:flutter_demo/module/douban/page/video_paly_page.dart';
+import 'package:flutter_demo/module/douban/utils/const_douban.dart';
 import 'package:flutter_demo/widget/bottom_drag_widget.dart';
 
 class MovieSubjectPage extends StatefulWidget {

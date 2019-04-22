@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_demo/common/package_common.dart';
-import 'package:flutter_demo/douban/bean/movie_photos_bean.dart';
-import 'package:flutter_demo/douban/utils/const_douban.dart';
+import 'package:flutter_demo/module/douban/bean/movie_photos_bean.dart';
+import 'package:flutter_demo/module/douban/utils/const_douban.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class VideoPhotosPage extends StatefulWidget {

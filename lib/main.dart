@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/douban/douban_page.dart';
+import 'package:flutter_demo/module/douban/douban_page.dart';
+import 'package:flutter_demo/main_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: DoubanPage(),
+      home: MainPage(),
     );
   }
 }
