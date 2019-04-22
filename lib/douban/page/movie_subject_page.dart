@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_demo/common/package_common.dart';
+import 'package:flutter_demo/douban/bean/movie_comment_bean.dart' as comment;
 import 'package:flutter_demo/douban/bean/movie_in_bean.dart' as movieIn;
 import 'package:flutter_demo/douban/bean/movie_subject_bean.dart';
-import 'package:flutter_demo/douban/page/demo.dart';
+import 'package:flutter_demo/douban/page/video_paly_page.dart';
 import 'package:flutter_demo/douban/utils/const_douban.dart';
 import 'package:flutter_demo/widget/bottom_drag_widget.dart';
 
@@ -20,7 +21,8 @@ class _MovieSubjectPageState extends State<MovieSubjectPage> {
   MovieSubjectPage get widget => super.widget;
 
   MovieSubjectBean _movieSubjectBean;
-  static const BOTTOM_TO_TOP = 80.0;
+  comment.MovieCommentBean _movieCommentBean;
+  static const BOTTOM_TO_TOP = 58.0;
 
   @override
   void initState() {
@@ -35,6 +37,14 @@ class _MovieSubjectPageState extends State<MovieSubjectPage> {
         _movieSubjectBean = MovieSubjectBean.fromJson(value);
       });
     });
+
+    HttpUtil.get(
+      '${ApiDouban.getMovieComment(widget.subject?.id, 100)}${widget.subject?.id}',
+    ).then((value) {
+      setState(() {
+        _movieCommentBean = comment.MovieCommentBean.fromJson(value);
+      });
+    });
   }
 
   @override
@@ -47,23 +57,26 @@ class _MovieSubjectPageState extends State<MovieSubjectPage> {
       child: BottomDragWidget(
           body: _buildContent(),
           dragContainer: DragContainer(
-            drawer: getListView(),
+            drawer: _getBottomContent(),
             defaultShowHeight: BOTTOM_TO_TOP,
-            height: 540.0,
+            height: 514.0,
           )),
     );
   }
 
-  CustomScrollView _buildContent() {
-    return CustomScrollView(
-      slivers: <Widget>[
-        _buildAppBar(),
-        _buildDesc(),
-        _buildCasts(),
-        _buildPhotos(),
-        _buildPopularComments(),
-        _buildTrailers(),
-      ],
+  Widget _buildContent() {
+    return Container(
+      margin: EdgeInsets.only(bottom: BOTTOM_TO_TOP),
+      child: CustomScrollView(
+        slivers: <Widget>[
+          _buildAppBar(),
+          _buildDesc(),
+          _buildCasts(),
+          _buildPhotos(),
+          _buildPopularComments(),
+          _buildTrailers(),
+        ],
+      ),
     );
   }
 
@@ -364,7 +377,7 @@ class _MovieSubjectPageState extends State<MovieSubjectPage> {
     return InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Demo();
+          return VideoPalyPage(bean.resourceUrl);
         }));
       },
       child: Card(
@@ -405,40 +418,99 @@ class _MovieSubjectPageState extends State<MovieSubjectPage> {
     );
   }
 
-  Widget getListView() {
-    return Container(
-      color: Colors.white30,
-      child: Column(
-        children: <Widget>[
-          Icon(Icons.call_merge),
-          Container(
-            width: double.infinity,
-            color: Colors.white,
-            padding: EdgeInsets.only(
-                top: 20.0, left: 12.0, bottom: 12.0, right: 12.0),
-            child: Text(
-              '影评',
-              style: TextStyle(fontSize: 16.0),
+  Widget _getBottomContent() {
+    return Card(
+      margin: EdgeInsets.only(),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      ),
+      child: Container(
+        color: Colors.white,
+        margin: EdgeInsets.only(top: 4.0),
+        child: Column(
+          children: <Widget>[
+            Icon(Icons.call_merge),
+            Container(
+              width: double.infinity,
+              color: Colors.white,
+              padding: EdgeInsets.only(left: 8.0, bottom: 8.0, right: 12.0),
+              child: Text(
+                '影评',
+                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
+              ),
             ),
-          ),
-          Expanded(
-              child: Container(
-            color: Colors.white,
-            child: newListView(),
-          ))
-        ],
+            Divider(
+              height: 1.0,
+            ),
+            Expanded(
+                child: Container(
+              color: Colors.white,
+              child: _bottomListView(),
+            ))
+          ],
+        ),
       ),
     );
   }
 
-  Widget newListView() {
+  Widget _bottomListView() {
     return OverscrollNotificationWidget(
       child: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
-          return Text('test');
+          return _buildItemCommentBottom(_movieCommentBean.comments[index]);
         },
-        itemCount: 80,
+        itemCount: _movieCommentBean?.comments?.length ?? 0,
         physics: ClampingScrollPhysics(),
+      ),
+    );
+  }
+
+  Widget _buildItemCommentBottom(comment.Comments comment) {
+    return Container(
+      padding: EdgeInsets.only(left: 12.0,right: 12.0,bottom: 20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Container(
+                width: 36.0,
+                height: 36.0,
+                child: ClipOval(
+                  child: CachedNetworkImage(
+                    imageUrl: comment?.author?.avatar ?? '',
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      comment?.author?.name ?? '',
+                      style: TextStyle(fontSize: 13.0),
+                    ),
+                    RatingBar(
+                      comment?.rating?.value ?? 0,
+                      iconSize: 10.0,
+                      textSize: 10.0,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 4.0),
+            child: Text(
+              comment.content,
+              style: TextStyle(),
+            ),
+          ),
+        ],
       ),
     );
   }
