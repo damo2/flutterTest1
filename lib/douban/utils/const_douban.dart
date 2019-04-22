@@ -9,4 +9,7 @@ class ApiDouban {
 
   static String getMovieComment(String id,int count) =>
       'https://api.douban.com/v2/movie/subject/$id/comments?apikey=$API_KEY&count=$count';
+
+  static String getMoviePhotos(String id,int start,int count)=>
+      'https://api.douban.com/v2/movie/subject/$id/photos?apikey=$API_KEY&start=$start&count=$count';
 }

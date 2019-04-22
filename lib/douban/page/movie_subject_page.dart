@@ -3,6 +3,7 @@ import 'package:flutter_demo/common/package_common.dart';
 import 'package:flutter_demo/douban/bean/movie_comment_bean.dart' as comment;
 import 'package:flutter_demo/douban/bean/movie_in_bean.dart' as movieIn;
 import 'package:flutter_demo/douban/bean/movie_subject_bean.dart';
+import 'package:flutter_demo/douban/page/movie_photo_page.dart';
 import 'package:flutter_demo/douban/page/video_paly_page.dart';
 import 'package:flutter_demo/douban/utils/const_douban.dart';
 import 'package:flutter_demo/widget/bottom_drag_widget.dart';
@@ -212,12 +213,35 @@ class _MovieSubjectPageState extends State<MovieSubjectPage> {
       children: <Widget>[
         Container(
           margin: EdgeInsets.only(top: 12.0, left: 12.0, bottom: 4.0),
-          child: Text(
-            '剧照',
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 16.0,
-                fontWeight: FontWeight.w600),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                '剧照',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w600),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (BuildContext context) {
+                    return VideoPhotosPage(widget.subject.id);
+                  }));
+                },
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(8.0, 8.0, 12.0, 8.0),
+                  child: Text(
+                    '全部${_movieSubjectBean?.photosCount}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 13.0,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         SingleChildScrollView(
@@ -467,7 +491,7 @@ class _MovieSubjectPageState extends State<MovieSubjectPage> {
 
   Widget _buildItemCommentBottom(comment.Comments comment) {
     return Container(
-      padding: EdgeInsets.only(left: 12.0,right: 12.0,bottom: 20.0),
+      padding: EdgeInsets.only(left: 12.0, right: 12.0, bottom: 20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
