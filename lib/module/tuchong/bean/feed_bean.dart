@@ -260,7 +260,7 @@ class Site {
         this.isFollowing});
 
   Site.fromJson(Map<String, dynamic> json) {
-    siteId = json['site_id'];
+    siteId = json['site_id'] as String;
     type = json['type'];
     name = json['name'];
     domain = json['domain'];

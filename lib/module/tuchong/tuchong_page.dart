@@ -11,18 +11,39 @@ class TuchongPage extends BaseWidget {
 }
 
 class _TuchongPageState extends BaseWidgetState<TuchongPage> {
-  FeedBean _feedBean;
+  ScrollController _scrollController = ScrollController();
+  List<FeedList> _feedList = List<FeedList>();
+  int page = 1;
 
   @override
   void initState() {
-    requestNet();
+    requestNet(true);
+    addMoreListener();
     super.initState();
   }
 
-  void requestNet() {
-    HttpUtil.get(ApiTuchong.Feed).then((value) {
+  void addMoreListener() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        requestNet(false);
+      }
+    });
+  }
+
+  Future requestNet(bool isRefresh) {
+    return HttpUtil.get(ApiTuchong.Feed, params: {
+      'page': isRefresh ? 1 : page + 1,
+      'type': isRefresh ? 'refresh' : 'loadmore',
+      'post_id': isRefresh ? null : _feedList.last?.postId,
+    }).then((value) {
+      page = isRefresh ? 1 : page + 1;
+      FeedBean _feedBean = FeedBean.fromJson(value);
       setState(() {
-        _feedBean = FeedBean.fromJson(value);
+        if (isRefresh) {
+          _feedList.clear();
+        }
+        _feedList.addAll(_feedBean.feedList);
       });
     });
   }
@@ -30,20 +51,24 @@ class _TuchongPageState extends BaseWidgetState<TuchongPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverPadding(
-            padding: const EdgeInsets.only(top: 28.0),
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return _buildFeed(_feedBean.feedList[index]);
-                },
-                childCount: _feedBean?.feedList?.length ?? 0,
+      body: RefreshIndicator(
+        onRefresh: () => requestNet(true),
+        child: CustomScrollView(
+          controller: _scrollController,
+          slivers: <Widget>[
+            SliverPadding(
+              padding: const EdgeInsets.only(top: 28.0),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return _buildFeed(_feedList[index]);
+                  },
+                  childCount: _feedList?.length ?? 0,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
