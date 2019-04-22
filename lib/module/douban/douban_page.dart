@@ -20,7 +20,7 @@ class _DoubanPageState extends State<DoubanPage> {
   }
 
   void requestMovieIn() {
-    HttpUtil.get(ApiDouban.getMovieInTheaters(0,100)).then((value) {
+    HttpUtil.get(ApiDouban.getMovieInTheaters(0, 100)).then((value) {
       setState(() {
         _movieInBean = MovieInBean.fromJson(value);
       });
@@ -69,8 +69,8 @@ class _DoubanPageState extends State<DoubanPage> {
 
   Widget _buildMovieIn(Subjects subject) {
     return InkWell(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context){
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
           return MovieSubjectPage(subject);
         }));
       },
@@ -110,9 +110,11 @@ class _DoubanPageState extends State<DoubanPage> {
             softWrap: false,
           ),
         ),
-        RatingBar(average,max: 10,),
+        RatingBar(
+          average,
+          max: 10,
+        ),
       ],
     );
   }
 }
-

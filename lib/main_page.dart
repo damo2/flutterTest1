@@ -18,12 +18,36 @@ class MainPageWidget extends StatefulWidget {
   }
 }
 
-class MainPageState extends State<MainPageWidget> {
+class MainPageState extends State<MainPageWidget>{
+
   int _tabIndex = 0;
   var tabImages;
   var appBarTitles = ['豆瓣', '图虫', '我的'];
 
   var _pageList;
+
+  void initData() {
+    tabImages = [
+      [
+        getTabImage('assets/main_tab_douban.png'),
+        getTabImage('assets/main_tab_douban.png', color: Colors.blue)
+      ],
+      [
+        getTabImage('assets/main_tab_tu.png'),
+        getTabImage('assets/main_tab_tu.png', color: Colors.blue)
+      ],
+      [
+        getTabImage('assets/main_tab_douban.png'),
+        getTabImage('assets/main_tab_douban.png', color: Colors.blue)
+      ]
+    ];
+
+    _pageList = [
+      DoubanPage(),
+      TuchongPage(),
+      DoubanPage(),
+    ];
+  }
 
   Widget getTabIcon(int curIndex) {
     if (curIndex == _tabIndex) {
@@ -51,31 +75,6 @@ class MainPageState extends State<MainPageWidget> {
     );
   }
 
-  void initData() {
-    /*
-     * 初始化选中和未选中的icon
-     */
-    tabImages = [
-      [
-        getTabImage('assets/main_tab_douban.png'),
-        getTabImage('assets/main_tab_douban.png', color: Colors.blue)
-      ],
-      [
-        getTabImage('assets/main_tab_tu.png'),
-        getTabImage('assets/main_tab_tu.png', color: Colors.blue)
-      ],
-      [
-        getTabImage('assets/main_tab_douban.png'),
-        getTabImage('assets/main_tab_douban.png', color: Colors.blue)
-      ]
-    ];
-
-    _pageList = [
-      DoubanPage(),
-      TuchongPage(),
-      DoubanPage(),
-    ];
-  }
 
   @override
   Widget build(BuildContext context) {

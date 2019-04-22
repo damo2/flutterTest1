@@ -1,30 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_demo/common/base/_base_widget.dart';
 import 'package:flutter_demo/common/package_common.dart';
 import 'package:flutter_demo/module/douban/bean/movie_in_bean.dart';
 import 'package:flutter_demo/module/douban/page/movie_subject_page.dart';
-import 'package:flutter_demo/module/douban/utils/const_douban.dart';
 
-
-class TuchongPage extends StatefulWidget {
+class TuchongPage extends BaseWidget {
   @override
-  _TuchongPageState createState() => _TuchongPageState();
+  BaseWidgetState<BaseWidget> getState() => _TuchongPageState();
 }
 
-class _TuchongPageState extends State<TuchongPage> {
-
+class _TuchongPageState extends BaseWidgetState<TuchongPage> {
   @override
   void initState() {
     requestMovieIn();
     super.initState();
   }
 
-  void requestMovieIn() {
-
-  }
+  void requestMovieIn() {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: ObjectKey('tuchon'),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverFixedExtentList(
@@ -47,8 +44,8 @@ class _TuchongPageState extends State<TuchongPage> {
 
   Widget _buildMovieIn(Subjects subject) {
     return InkWell(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context){
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
           return MovieSubjectPage(subject);
         }));
       },
@@ -88,9 +85,11 @@ class _TuchongPageState extends State<TuchongPage> {
             softWrap: false,
           ),
         ),
-        RatingBar(average,max: 10,),
+        RatingBar(
+          average,
+          max: 10,
+        ),
       ],
     );
   }
 }
-
