@@ -2,8 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_demo/common/package_common.dart';
 import 'package:flutter_demo/douban/bean/movie_in_bean.dart' as movieIn;
 import 'package:flutter_demo/douban/bean/movie_subject_bean.dart';
-import 'package:flutter_demo/douban/page/video_paly_page.dart';
+import 'package:flutter_demo/douban/page/demo.dart';
 import 'package:flutter_demo/douban/utils/const_douban.dart';
+import 'package:flutter_demo/widget/bottom_drag_widget.dart';
 
 class MovieSubjectPage extends StatefulWidget {
   movieIn.Subjects subject;
@@ -19,6 +20,7 @@ class _MovieSubjectPageState extends State<MovieSubjectPage> {
   MovieSubjectPage get widget => super.widget;
 
   MovieSubjectBean _movieSubjectBean;
+  static const BOTTOM_TO_TOP = 80.0;
 
   @override
   void initState() {
@@ -37,18 +39,32 @@ class _MovieSubjectPageState extends State<MovieSubjectPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.blueGrey[800],
-        body: CustomScrollView(
-          slivers: <Widget>[
-            _buildAppBar(),
-            _buildDesc(),
-            _buildCasts(),
-            _buildPhotos(),
-            _buildPopularComments(),
-            _buildTrailers(),
-          ],
-        ));
+    return Scaffold(backgroundColor: Colors.blueGrey[800], body: _buildBody());
+  }
+
+  Widget _buildBody() {
+    return Container(
+      child: BottomDragWidget(
+          body: _buildContent(),
+          dragContainer: DragContainer(
+            drawer: getListView(),
+            defaultShowHeight: BOTTOM_TO_TOP,
+            height: 540.0,
+          )),
+    );
+  }
+
+  CustomScrollView _buildContent() {
+    return CustomScrollView(
+      slivers: <Widget>[
+        _buildAppBar(),
+        _buildDesc(),
+        _buildCasts(),
+        _buildPhotos(),
+        _buildPopularComments(),
+        _buildTrailers(),
+      ],
+    );
   }
 
   Widget _buildAppBar() {
@@ -60,7 +76,7 @@ class _MovieSubjectPageState extends State<MovieSubjectPage> {
       //固定在顶部
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
-        centerTitle: true,
+        centerTitle: false,
         title: Text(widget.subject?.title),
         background: CachedNetworkImage(
           imageUrl: widget.subject?.images?.medium ?? "",
@@ -103,6 +119,7 @@ class _MovieSubjectPageState extends State<MovieSubjectPage> {
               child: Text(
                 _movieSubjectBean?.summary ?? '',
                 maxLines: _isDescOpen ? null : 4,
+                overflow: _isDescOpen ? null : TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 15.0,
@@ -345,9 +362,9 @@ class _MovieSubjectPageState extends State<MovieSubjectPage> {
 
   Widget _buildItemTrailers(Trailers bean) {
     return InkWell(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context){
-          return VideoPalyPage(bean?.resourceUrl);
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return Demo();
         }));
       },
       child: Card(
@@ -384,6 +401,44 @@ class _MovieSubjectPageState extends State<MovieSubjectPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget getListView() {
+    return Container(
+      color: Colors.white30,
+      child: Column(
+        children: <Widget>[
+          Icon(Icons.call_merge),
+          Container(
+            width: double.infinity,
+            color: Colors.white,
+            padding: EdgeInsets.only(
+                top: 20.0, left: 12.0, bottom: 12.0, right: 12.0),
+            child: Text(
+              '影评',
+              style: TextStyle(fontSize: 16.0),
+            ),
+          ),
+          Expanded(
+              child: Container(
+            color: Colors.white,
+            child: newListView(),
+          ))
+        ],
+      ),
+    );
+  }
+
+  Widget newListView() {
+    return OverscrollNotificationWidget(
+      child: ListView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          return Text('test');
+        },
+        itemCount: 80,
+        physics: ClampingScrollPhysics(),
       ),
     );
   }

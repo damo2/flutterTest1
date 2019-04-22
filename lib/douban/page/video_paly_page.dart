@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_demo/common/package_common.dart';
 import 'package:video_player/video_player.dart';
 
