@@ -55,7 +55,7 @@ class _TuchongPageState extends BaseWidgetState<TuchongPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildUser(bean.site),
-          _buildImage(bean.images[0]),
+          _buildImage(bean.images),
           _buildTags(bean.tags),
           _buildLikeComment(bean.favorites, bean.comments, bean.publishedAt),
         ],
@@ -102,22 +102,24 @@ class _TuchongPageState extends BaseWidgetState<TuchongPage> {
     );
   }
 
-  Widget _buildImage(Images image) {
+  Widget _buildImage(List<Images> images) {
     return InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return FeedViewpager();
+          return FeedViewpager(images);
         }));
       },
-      child: Container(
-        child: CachedNetworkImage(
-          imageUrl:
-              'https://photo.tuchong.com/${image.userId}/f/${image.imgId}.jpg',
-          placeholder: (context, url) => CircularProgressIndicator(),
-          errorWidget: (context, url, error) => Icon(Icons.error),
-          fit: BoxFit.cover,
-        ),
-      ),
+      child: (images?.length ?? 0) > 0
+          ? Container(
+              child: CachedNetworkImage(
+                imageUrl:
+                    'https://photo.tuchong.com/${images[0].userId}/f/${images[0].imgId}.jpg',
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+                fit: BoxFit.cover,
+              ),
+            )
+          : Container(),
     );
   }
 

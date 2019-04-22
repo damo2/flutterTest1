@@ -65,7 +65,6 @@ class FeedList {
   String title;
   int imageCount;
   List<Images> images;
-  String titleImage;
   List<String> tags;
   List<String> eventTags;
   String dataType;
@@ -98,7 +97,6 @@ class FeedList {
         this.title,
         this.imageCount,
         this.images,
-        this.titleImage,
         this.tags,
         this.eventTags,
         this.dataType,
@@ -136,7 +134,6 @@ class FeedList {
         images.add(new Images.fromJson(v));
       });
     }
-    titleImage = json['title_image'];
     tags = json['tags'].cast<String>();
     eventTags = json['event_tags'].cast<String>();
     dataType = json['data_type'];
@@ -173,7 +170,6 @@ class FeedList {
     if (this.images != null) {
       data['images'] = this.images.map((v) => v.toJson()).toList();
     }
-    data['title_image'] = this.titleImage;
     data['tags'] = this.tags;
     data['event_tags'] = this.eventTags;
     data['data_type'] = this.dataType;
