@@ -18,13 +18,12 @@ class MainPageWidget extends StatefulWidget {
   }
 }
 
-class MainPageState extends State<MainPageWidget>{
-
+class MainPageState extends State<MainPageWidget> {
   int _tabIndex = 0;
   var tabImages;
   var appBarTitles = ['豆瓣', '图虫', '我的'];
 
-  var _pageList;
+  List<Widget> _pageList;
 
   void initData() {
     tabImages = [
@@ -75,13 +74,15 @@ class MainPageState extends State<MainPageWidget>{
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     //初始化数据
     initData();
     return Scaffold(
-      body: _pageList[_tabIndex],
+      body: IndexedStack(
+        children: _pageList,
+        index: _tabIndex,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: getTabIcon(0), title: getTabTitle(0)),
