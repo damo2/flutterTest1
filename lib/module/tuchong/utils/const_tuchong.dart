@@ -4,4 +4,8 @@ class ApiTuchong {
 
   static String getPhotoInfo(int id) =>
       'https://api.tuchong.com/images/$id/exif';
+
+  static String getFeatured({int id=-3}) =>
+      'https://api.tuchong.com/discover/$id/category';
+
 }

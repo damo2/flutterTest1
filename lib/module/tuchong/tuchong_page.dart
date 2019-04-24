@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/module/tuchong/page/tuchong_discover_page.dart';
+import 'package:flutter_demo/module/tuchong/page/tuchong_featured_page.dart';
 import 'package:flutter_demo/module/tuchong/page/tuchong_feed_page.dart';
 
 class TuchongPage extends StatefulWidget {
@@ -17,7 +18,8 @@ class _TuchongPageState extends State<TuchongPage>
   @override
   bool get wantKeepAlive => true;
 
-  List<Tab>_tabList=List<Tab>();
+  List<Tab> _tabList = List<Tab>();
+  List<Widget> _pageList = List();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,8 @@ class _TuchongPageState extends State<TuchongPage>
       body: Column(
         children: <Widget>[
           Container(
-            color: new Color(0xfff4f5f6),
+            margin: EdgeInsets.only(top: 20.0),
+            color: Color(0xfff4f5f6),
             height: 24.0,
             child: TabBar(
               isScrollable: true,
@@ -38,7 +41,7 @@ class _TuchongPageState extends State<TuchongPage>
           ),
           Expanded(
             child: TabBarView(
-              children: [TuchongFeedPage(), TuchongDiscoverPage()],
+              children: _pageList,
               controller: mTabController,
             ),
           ),
@@ -50,7 +53,16 @@ class _TuchongPageState extends State<TuchongPage>
   @override
   void initState() {
     super.initState();
-    _tabList=[Tab(text: "热门"), Tab(text: "发现")];
+    _tabList = [
+      Tab(text: "热门"),
+      Tab(text: "发现"),
+      Tab(text: "精选"),
+    ];
+    _pageList = [
+      TuchongFeedPage(),
+      TuchongDiscoverPage(),
+      TuchongFeaturedPage(),
+    ];
     mTabController = TabController(vsync: this, length: _tabList.length);
     mTabController.addListener(() {
       if (mTabController.indexIsChanging) {

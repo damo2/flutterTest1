@@ -87,6 +87,7 @@ class _MovieSubjectPageState extends State<MovieSubjectPage> {
       expandedHeight: 300.0,
       //不随着滑动隐藏标题
       floating: false,
+      centerTitle: true,
       //固定在顶部
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
