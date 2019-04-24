@@ -50,6 +50,7 @@ class _FeaturedDetailPageState extends BaseWidgetState<FeaturedDetailPage> {
         opacity: _isShowBottom ? 1.0 : 0.0,
         duration: Duration(seconds: 1),
         child: Container(
+          padding: EdgeInsets.only(bottom: 8.0),
           width: ScreenUtil.getScreenW(context),
           color: Colors.white10,
           child: Column(
@@ -61,13 +62,15 @@ class _FeaturedDetailPageState extends BaseWidgetState<FeaturedDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     _buildIconTxt(Icons.chat_bubble_outline,
-                        '${widget.bean.comments ?? 0}'),
+                        '${widget.bean.comments ?? 0}', '评论'),
+                    _buildIconTxt(Icons.favorite_border,
+                        '${widget.bean.favorites ?? 0}', '喜欢'),
                     _buildIconTxt(
-                        Icons.favorite_border, '${widget.bean.favorites ?? 0}'),
+                        Icons.grade, '${widget.bean.collectNum ?? 0}', '收藏'),
                     _buildIconTxt(
-                        Icons.grade, '${widget.bean.collectNum ?? 0}'),
-                    _buildIconTxt(Icons.share, '${widget.bean.shares ?? 0}'),
-                    _buildIconTxt(Icons.file_download, '${widget.bean.downloads ?? 0}'),
+                        Icons.share, '${widget.bean.shares ?? 0}', '分享'),
+                    _buildIconTxt(Icons.file_download,
+                        '${widget.bean.downloads ?? 0}', '下载'),
                   ],
                 ),
               ),
@@ -78,22 +81,30 @@ class _FeaturedDetailPageState extends BaseWidgetState<FeaturedDetailPage> {
     );
   }
 
-  Widget _buildIconTxt(IconData icon, String num) {
+  Widget _buildIconTxt(IconData icon, String num, String desc) {
     return Container(
-      height: 40.0,
+      height: 50.0,
       width: 60.0,
       child: Stack(
         children: <Widget>[
           Positioned(
             bottom: 0.0,
-            child: Icon(
-              icon,
-              color: Colors.white,
-              size: 30.0,
+            child: Column(
+              children: <Widget>[
+                Icon(
+                  icon,
+                  color: Colors.white,
+                  size: 30.0,
+                ),
+                Text(
+                  desc,
+                  style: TextStyle(color: Colors.white, fontSize: 12.0),
+                ),
+              ],
             ),
           ),
           Positioned(
-              bottom: 16.0,
+              bottom: 32.0,
               left: 28.0,
               child: Text(
                 num,
@@ -131,7 +142,7 @@ class _FeaturedDetailPageState extends BaseWidgetState<FeaturedDetailPage> {
   }
 
   Widget _buildItem(Images image) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         setState(() {
           _isShowBottom = !_isShowBottom;
