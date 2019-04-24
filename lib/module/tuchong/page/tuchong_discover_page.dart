@@ -2,9 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_demo/common/base/_base_widget.dart';
 import 'package:flutter_demo/common/package_common.dart';
 import 'package:flutter_demo/module/tuchong/bean/discover_bean.dart';
-import 'package:flutter_demo/module/tuchong/bean/feed_bean.dart';
-import 'package:flutter_demo/module/tuchong/page/feed_viewpager_page.dart';
 import 'package:flutter_demo/module/tuchong/utils/const_tuchong.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 
 class TuchongDiscoverPage extends BaseWidget {
   @override
@@ -51,7 +50,7 @@ class _TuchongDiscoverPageState extends BaseWidgetState<TuchongDiscoverPage>
           controller: _scrollController,
           slivers: <Widget>[
             SliverPadding(
-              padding: const EdgeInsets.only(top: 28.0),
+              padding: const EdgeInsets.only(top: 8.0),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
@@ -67,14 +66,31 @@ class _TuchongDiscoverPageState extends BaseWidgetState<TuchongDiscoverPage>
     );
   }
 
+  Widget _buildSwiper() {
+    return Swiper(
+      itemBuilder: (BuildContext context, int index) {
+        return Image.network(
+          "http://via.placeholder.com/350x150",
+          fit: BoxFit.fill,
+        );
+      },
+      itemCount: 3,
+      pagination: SwiperPagination(),
+      control: SwiperControl(),
+    );
+  }
+
   Widget _buildHotEvents(HotEvents bean) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _buildImage(bean.images?.first ?? ""),
-        ],
+    return Card(
+      margin: EdgeInsets.only(bottom: 16.0, left: 8.0, right: 8.0),
+      child: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _buildImage(bean.images?.first ?? ""),
+            _buildContent(bean),
+          ],
+        ),
       ),
     );
   }
@@ -86,6 +102,32 @@ class _TuchongDiscoverPageState extends BaseWidgetState<TuchongDiscoverPage>
         placeholder: (context, url) => CircularProgressIndicator(),
         errorWidget: (context, url, error) => Icon(Icons.error),
         fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  Widget _buildContent(HotEvents bean) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(8.0),
+      color: Colors.grey[100],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            bean.title,
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 2.0),
+            child: Text(
+              bean.prizeDesc,
+              style: TextStyle(fontSize: 14.0),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
       ),
     );
   }
