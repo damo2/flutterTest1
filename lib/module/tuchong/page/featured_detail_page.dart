@@ -1,10 +1,12 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_demo/common/base/_base_widget.dart';
 import 'package:flutter_demo/common/package_common.dart';
 import 'package:flutter_demo/module/tuchong/bean/featured_bean.dart';
+import 'package:simple_permissions/simple_permissions.dart';
 
 class FeaturedDetailPage extends BaseWidget {
   PostList bean;
@@ -70,7 +72,14 @@ class _FeaturedDetailPageState extends BaseWidgetState<FeaturedDetailPage> {
                     _buildIconTxt(
                         Icons.share, '${widget.bean.shares ?? 0}', '分享'),
                     _buildIconTxt(Icons.file_download,
-                        '${widget.bean.downloads ?? 0}', '下载'),
+                        '${widget.bean.downloads ?? 0}', '下载',
+                        onTag: () async {
+                          PermissionStatus status = await SimplePermissions.requestPermission(
+                              Permission.WriteExternalStorage);
+                          PermissionStatus statuss = await SimplePermissions.requestPermission(
+                              Permission.ReadExternalStorage);
+                           Dio().download('https://photo.tuchong.com/${_imageList[_index-1].userId}/f/${_imageList[_index-1].imgId}.jpg',await ConstPath.getImageDir()+'/${_imageList[_index-1].userId}_${_imageList[_index-1].imgId}.jpg');
+                        }),
                   ],
                 ),
               ),
@@ -81,36 +90,40 @@ class _FeaturedDetailPageState extends BaseWidgetState<FeaturedDetailPage> {
     );
   }
 
-  Widget _buildIconTxt(IconData icon, String num, String desc) {
-    return Container(
-      height: 50.0,
-      width: 60.0,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            bottom: 0.0,
-            child: Column(
-              children: <Widget>[
-                Icon(
-                  icon,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-                Text(
-                  desc,
-                  style: TextStyle(color: Colors.white, fontSize: 12.0),
-                ),
-              ],
+  Widget _buildIconTxt(IconData icon, String num, String desc,
+      {GestureTapCallback onTag}) {
+    return GestureDetector(
+      onTap: onTag,
+      child: Container(
+        height: 50.0,
+        width: 60.0,
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              bottom: 0.0,
+              child: Column(
+                children: <Widget>[
+                  Icon(
+                    icon,
+                    color: Colors.white,
+                    size: 30.0,
+                  ),
+                  Text(
+                    desc,
+                    style: TextStyle(color: Colors.white, fontSize: 12.0),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Positioned(
-              bottom: 32.0,
-              left: 28.0,
-              child: Text(
-                num,
-                style: TextStyle(color: Colors.white, fontSize: 11.0),
-              )),
-        ],
+            Positioned(
+                bottom: 32.0,
+                left: 28.0,
+                child: Text(
+                  num,
+                  style: TextStyle(color: Colors.white, fontSize: 11.0),
+                )),
+          ],
+        ),
       ),
     );
   }
