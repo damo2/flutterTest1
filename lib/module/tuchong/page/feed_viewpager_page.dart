@@ -1,12 +1,12 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/src/widgets/framework.dart';
-
 import 'package:flutter_demo/common/base/_base_widget.dart';
 import 'package:flutter_demo/common/package_common.dart';
 import 'package:flutter_demo/module/tuchong/bean/feed_bean.dart';
 import 'package:flutter_demo/module/tuchong/bean/photo_info_bean.dart';
 import 'package:flutter_demo/module/tuchong/utils/const_tuchong.dart';
-import 'dart:ui';
 
 class FeedViewpager extends BaseWidget {
   List<Images> imageList;
@@ -22,22 +22,46 @@ class _FeedViewpagerState extends BaseWidgetState<FeedViewpager> {
 
   List<Images> _imageList;
 
+  bool isTop = true;
+  double pixelsLast;
+
+  double _infoHeight = 200.0;
+  int _indexCurrent = 0;
+
   @override
   void initState() {
     _imageList = widget.imageList;
-    _scrollController.addListener((){
-      print(_scrollController.position.pixels);
-//      _scrollController.animateTo(ScreenUtil.getScreenH(context)*2, duration: Duration(milliseconds: 500), curve: Curves.ease);
-     setState(() {
-       _scrollController.jumpTo(-20);
-     });
-      if(_scrollController.position.pixels >= 100){
-        setState(() {
-          _scrollController.animateTo(ScreenUtil.getScreenH(context)*2, duration: Duration(milliseconds: 500), curve: Curves.easeOut);
-        });
-      }
-    });
+    _addScrollListener();
+    requestImageInfo(0);
     super.initState();
+  }
+
+  void _addScrollListener() {
+    _scrollController.addListener(() {
+      setState(() {
+        var pixels = _scrollController.position.pixels;
+        print('$pixels ${_scrollController.hasClients}');
+        bool isToBottom = pixels >= _infoHeight / 2;
+        bool isMove = (isToBottom && isTop) || (!isToBottom && !isTop);
+        pixelsLast = pixels;
+        if (isMove) {
+          _scrollController.animateTo(isToBottom ? _infoHeight : 0,
+              duration: Duration(milliseconds: 500), curve: Curves.easeOut);
+          isTop = !isToBottom;
+        } else {
+          Future.delayed(Duration(milliseconds: 50), () {
+            if (pixelsLast == pixels) {
+              setState(() {
+                _scrollController.animateTo(
+                    isTop ? 0 : ScreenUtil.getScreenH(context),
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.easeOut);
+              });
+            }
+          });
+        }
+      });
+    });
   }
 
   void requestImageInfo(int index) {
@@ -92,7 +116,7 @@ class _FeedViewpagerState extends BaseWidgetState<FeedViewpager> {
 
   Widget _buildImageInfo(Images image) {
     return Container(
-      height: ScreenUtil.getScreenH(context),
+      height: _infoHeight,
       margin: EdgeInsets.only(top: 12.0, left: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
