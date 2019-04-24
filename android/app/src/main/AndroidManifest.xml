@@ -16,7 +16,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="demo"
+        android:label="damoflutter"
         android:icon="@mipmap/ic_douban">
         <activity
             android:name=".MainActivity"
