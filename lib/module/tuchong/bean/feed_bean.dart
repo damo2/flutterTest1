@@ -1,3 +1,5 @@
+import 'package:flutter_demo/module/tuchong/bean/photo_info_bean.dart';
+
 class FeedBean {
   bool isHistory;
   int counts;
@@ -8,11 +10,11 @@ class FeedBean {
 
   FeedBean(
       {this.isHistory,
-        this.counts,
-        this.feedList,
-        this.message,
-        this.more,
-        this.result});
+      this.counts,
+      this.feedList,
+      this.message,
+      this.more,
+      this.result});
 
   FeedBean.fromJson(Map<String, dynamic> json) {
     isHistory = json['is_history'];
@@ -76,35 +78,35 @@ class FeedList {
 
   FeedList(
       {this.postId,
-        this.type,
-        this.url,
-        this.siteId,
-        this.authorId,
-        this.publishedAt,
-        this.passedTime,
-        this.excerpt,
-        this.favorites,
-        this.comments,
-        this.rewardable,
-        this.parentComments,
-        this.rewards,
-        this.views,
-        this.collected,
-        this.shares,
-        this.delete,
-        this.update,
-        this.content,
-        this.title,
-        this.imageCount,
-        this.images,
-        this.tags,
-        this.eventTags,
-        this.dataType,
-        this.createdAt,
-        this.site,
-        this.recomType,
-        this.rqtId,
-        this.isFavorite});
+      this.type,
+      this.url,
+      this.siteId,
+      this.authorId,
+      this.publishedAt,
+      this.passedTime,
+      this.excerpt,
+      this.favorites,
+      this.comments,
+      this.rewardable,
+      this.parentComments,
+      this.rewards,
+      this.views,
+      this.collected,
+      this.shares,
+      this.delete,
+      this.update,
+      this.content,
+      this.title,
+      this.imageCount,
+      this.images,
+      this.tags,
+      this.eventTags,
+      this.dataType,
+      this.createdAt,
+      this.site,
+      this.recomType,
+      this.rqtId,
+      this.isFavorite});
 
   FeedList.fromJson(Map<String, dynamic> json) {
     postId = json['post_id'];
@@ -192,15 +194,20 @@ class Images {
   int width;
   int height;
   String description;
+  PhotoInfoBean photoInfoBean;
+
+  void setPhotoInfoBean(PhotoInfoBean _photoInfoBean) {
+    photoInfoBean = _photoInfoBean;
+  }
 
   Images(
       {this.imgId,
-        this.userId,
-        this.title,
-        this.excerpt,
-        this.width,
-        this.height,
-        this.description});
+      this.userId,
+      this.title,
+      this.excerpt,
+      this.width,
+      this.height,
+      this.description});
 
   Images.fromJson(Map<String, dynamic> json) {
     imgId = json['img_id'];
@@ -244,20 +251,20 @@ class Site {
 
   Site(
       {this.siteId,
-        this.type,
-        this.name,
-        this.domain,
-        this.description,
-        this.followers,
-        this.url,
-        this.icon,
-        this.isBindEverphoto,
-        this.hasEverphotoNote,
-        this.verified,
-        this.verifiedType,
-        this.verifiedReason,
-        this.verifications,
-        this.isFollowing});
+      this.type,
+      this.name,
+      this.domain,
+      this.description,
+      this.followers,
+      this.url,
+      this.icon,
+      this.isBindEverphoto,
+      this.hasEverphotoNote,
+      this.verified,
+      this.verifiedType,
+      this.verifiedReason,
+      this.verifications,
+      this.isFollowing});
 
   Site.fromJson(Map<String, dynamic> json) {
     siteId = json['site_id'] as String;
