@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/common/package_common.dart';
 import 'package:flutter_demo/module/douban/douban_page.dart';
+import 'package:flutter_demo/module/toutiao/toutiao_page.dart';
 import 'package:flutter_demo/module/tuchong/tuchong_page.dart';
 
 class MainPage extends StatelessWidget {
@@ -21,7 +22,7 @@ class MainPageWidget extends StatefulWidget {
 class MainPageState extends State<MainPageWidget> {
   int _tabIndex = 0;
   var tabImages;
-  var appBarTitles = ['豆瓣', '图虫', '我的'];
+  var appBarTitles = ['豆瓣', '图虫', '头条'];
 
   List<Widget> _pageList;
 
@@ -36,15 +37,15 @@ class MainPageState extends State<MainPageWidget> {
         getTabImage('assets/main_tab_tu.png', color: Colors.blue)
       ],
       [
-        getTabImage('assets/main_tab_douban.png'),
-        getTabImage('assets/main_tab_douban.png', color: Colors.blue)
+        getTabImage('assets/main_tab_toutiao.png'),
+        getTabImage('assets/main_tab_toutiao.png', color: Colors.blue)
       ]
     ];
 
     _pageList = [
       DoubanPage(),
       TuchongPage(),
-      DoubanPage(),
+      ToutiaoPage(),
     ];
   }
 
