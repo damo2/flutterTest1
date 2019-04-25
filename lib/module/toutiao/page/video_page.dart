@@ -10,6 +10,7 @@ import 'package:flutter_demo/module/tuchong/bean/discover_bean.dart';
 import 'package:flutter_demo/module/tuchong/utils/const_tuchong.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:chewie/chewie.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPage extends BaseWidget {
@@ -80,21 +81,33 @@ class _TuchongDiscoverPageState extends BaseWidgetState<VideoPage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _buildImage(videoBean.middleImage.url),
+          _buildImage(videoBean),
         ],
       ),
     );
   }
 
-  Widget _buildImage(String img) {
-    return Container(
-      margin: EdgeInsets.only(top: 12.0),
-      width: double.infinity,
-      child: CachedNetworkImage(
-        imageUrl: img,
-        placeholder: (context, url) => CircularProgressIndicator(),
-        errorWidget: (context, url, error) => Icon(Icons.error),
-        fit: BoxFit.fitWidth,
+  Widget _buildImage(VideoBean videoBean) {
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return WebviewScaffold(
+            url: videoBean.url,
+            appBar: new AppBar(
+              title: Text(videoBean.abstract),
+            ),
+          );
+        }));
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: 12.0),
+        width: double.infinity,
+        child: CachedNetworkImage(
+          imageUrl: videoBean.middleImage.url,
+          placeholder: (context, url) => CircularProgressIndicator(),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+          fit: BoxFit.fitWidth,
+        ),
       ),
     );
   }

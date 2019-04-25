@@ -36,7 +36,7 @@ dependencies:
   video_player: ^0.10.0+5
   flutter_swiper: ^1.0.6
   chewie: ^0.9.7
-
+  flutter_webview_plugin: ^0.3.4
 
 dev_dependencies:
   flutter_test:
