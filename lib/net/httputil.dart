@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-
+import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 
 ///http请求
@@ -64,6 +64,12 @@ class HttpUtil {
   }) async {
     bool isToastError = isToast != false && errorInfo != null;
     //没有网络
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      if (isToastError)
+        _handError(0, '网络异常', errorInfo);
+      return Future.error('网络异常');
+    }
     if (option == null) {
       option = Options();
     }
