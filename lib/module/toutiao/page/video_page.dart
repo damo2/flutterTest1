@@ -1,15 +1,12 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter_demo/common/base/_base_widget.dart';
 import 'package:flutter_demo/common/package_common.dart';
 import 'package:flutter_demo/module/toutiao/bean/video_bean.dart';
 import 'package:flutter_demo/module/toutiao/bean/video_data_bean.dart';
 import 'package:flutter_demo/module/toutiao/utils/const_toutiao.dart';
-import 'package:flutter_demo/module/tuchong/bean/discover_bean.dart';
-import 'package:flutter_demo/module/tuchong/utils/const_tuchong.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:chewie/chewie.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:video_player/video_player.dart';
 
@@ -74,9 +71,8 @@ class _TuchongDiscoverPageState extends BaseWidgetState<VideoPage>
     );
   }
 
-
   Widget _buildItem(Data bean) {
-    VideoBean videoBean=VideoBean.fromJson(json.decode(bean.content));
+    VideoBean videoBean = VideoBean.fromJson(json.decode(bean.content));
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,28 +85,55 @@ class _TuchongDiscoverPageState extends BaseWidgetState<VideoPage>
 
   Widget _buildImage(VideoBean videoBean) {
     return GestureDetector(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context){
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
           return WebviewScaffold(
             url: videoBean.url,
-            appBar: new AppBar(
-              title: Text(videoBean.abstract),
-            ),
           );
         }));
       },
-      child: Container(
-        margin: EdgeInsets.only(top: 12.0),
-        width: double.infinity,
-        child: CachedNetworkImage(
-          imageUrl: videoBean.middleImage.url,
-          placeholder: (context, url) => CircularProgressIndicator(),
-          errorWidget: (context, url, error) => Icon(Icons.error),
-          fit: BoxFit.fitWidth,
-        ),
+      child: Stack(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(top: 12.0),
+            width: double.infinity,
+            child: CachedNetworkImage(
+              imageUrl: videoBean.middleImage.url,
+              placeholder: (context, url) => CircularProgressIndicator(),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 90.0),
+            child: Center(
+                child: ClipOval(
+              child: Container(
+                color: Colors.black12,
+                child: Icon(
+                  Icons.play_arrow,
+                  size: 60.0,
+                  color: Colors.white70,
+                ),
+              ),
+            )),
+          ),
+          Positioned(
+            bottom: 0.0,
+            child: Container(
+              color: Colors.black26,
+              padding: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
+              child: Text(
+                videoBean.title ?? '',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
+
   Widget _buildVideo(String img) {
     final videoPlayerController = VideoPlayerController.network(
         'http://www.365yg.com/a6683428770465972743/#mid=1607129953912835');
@@ -130,5 +153,4 @@ class _TuchongDiscoverPageState extends BaseWidgetState<VideoPage>
       ),
     );
   }
-
 }
