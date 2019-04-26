@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/common/package_common.dart';
 import 'package:flutter_demo/module/douban/douban_page.dart';
+import 'package:flutter_demo/module/douyin/douyin_page.dart';
 import 'package:flutter_demo/module/toutiao/toutiao_page.dart';
 import 'package:flutter_demo/module/tuchong/tuchong_page.dart';
 
@@ -22,7 +23,7 @@ class MainPageWidget extends StatefulWidget {
 class MainPageState extends State<MainPageWidget> {
   int _tabIndex = 0;
   var tabImages;
-  var appBarTitles = ['豆瓣', '图虫', '头条'];
+  var appBarTitles = ['豆瓣', '图虫', '头条', '抖音'];
 
   List<Widget> _pageList;
 
@@ -39,13 +40,18 @@ class MainPageState extends State<MainPageWidget> {
       [
         getTabImage('assets/main_tab_toutiao.png'),
         getTabImage('assets/main_tab_toutiao.png', color: Colors.blue)
-      ]
+      ],
+      [
+        getTabImage('assets/main_tab_toutiao.png'),
+        getTabImage('assets/main_tab_toutiao.png', color: Colors.blue)
+      ],
     ];
 
     _pageList = [
       DoubanPage(),
       TuchongPage(),
       ToutiaoPage(),
+      DouyinPage(),
     ];
   }
 
@@ -89,6 +95,7 @@ class MainPageState extends State<MainPageWidget> {
           BottomNavigationBarItem(icon: getTabIcon(0), title: getTabTitle(0)),
           BottomNavigationBarItem(icon: getTabIcon(1), title: getTabTitle(1)),
           BottomNavigationBarItem(icon: getTabIcon(2), title: getTabTitle(2)),
+          BottomNavigationBarItem(icon: getTabIcon(3), title: getTabTitle(3)),
         ],
         type: BottomNavigationBarType.shifting,
         currentIndex: _tabIndex,
