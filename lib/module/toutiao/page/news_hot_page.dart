@@ -10,12 +10,12 @@ import 'package:flutter_demo/module/toutiao/utils/const_toutiao.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:video_player/video_player.dart';
 
-class VideoPage extends BaseWidget {
+class NewHotPage extends BaseWidget {
   @override
-  BaseWidgetState<BaseWidget> getState() => _VideoPageState();
+  BaseWidgetState<BaseWidget> getState() => _NewHotPageState();
 }
 
-class _VideoPageState extends BaseWidgetState<VideoPage>
+class _NewHotPageState extends BaseWidgetState<NewHotPage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true; //是否保存状态
@@ -43,18 +43,7 @@ class _VideoPageState extends BaseWidgetState<VideoPage>
     return HttpUtil.get(
       ApiToubao.VIDEO,
       params: {
-        'category': 'video',
-        'refer': '1',
-        'last_refresh_sub_entrance_interval':
-        '${DateTime
-            .now()
-            .millisecondsSinceEpoch ~/ 1000}',
-        '_rticket': '${DateTime
-            .now()
-            .millisecondsSinceEpoch}',
-        'max_behot_time': '${DateTime
-            .now()
-            .millisecondsSinceEpoch}'
+        'category': 'news_hot',
       },
     ).then((value) {
       setState(() {
@@ -80,7 +69,7 @@ class _VideoPageState extends BaseWidgetState<VideoPage>
               padding: const EdgeInsets.only(top: 8.0),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
+                  (BuildContext context, int index) {
                     return _buildItem(_dataList[index]);
                   },
                   childCount: _dataList?.length ?? 0,
@@ -100,13 +89,13 @@ class _VideoPageState extends BaseWidgetState<VideoPage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _buildImage(videoBean),
+          _buildNewsItem(videoBean),
         ],
       ),
     );
   }
 
-  Widget _buildImage(VideoBean videoBean) {
+  Widget _buildNewsItem(VideoBean videoBean) {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -115,45 +104,94 @@ class _VideoPageState extends BaseWidgetState<VideoPage>
           );
         }));
       },
-      child: Stack(
+      child: _buildNews(videoBean),
+    );
+  }
+
+  Widget _buildNews(VideoBean videoBean) {
+    return Container(
+      margin: EdgeInsets.only(top: 8.0),
+      padding: EdgeInsets.only(left: 12.0, right: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(top: 12.0),
-            width: double.infinity,
-            child: CachedNetworkImage(
-              imageUrl: videoBean.middleImage.url,
-              placeholder: (context, url) => CircularProgressIndicator(),
-              errorWidget: (context, url, error) => Icon(Icons.error),
-              fit: BoxFit.fitWidth,
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 90.0),
-            child: Center(
-                child: ClipOval(
-                  child: Container(
-                    color: Colors.black12,
-                    child: Icon(
-                      Icons.play_arrow,
-                      size: 60.0,
-                      color: Colors.white70,
-                    ),
-                  ),
-                )),
-          ),
-          Positioned(
-            bottom: 0.0,
-            child: Container(
-              color: Colors.black26,
-              padding: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
-              child: Text(
-                videoBean.title ?? '',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
+              margin: EdgeInsets.only(bottom: 8.0),
+              child: Text(videoBean.title ?? '')),
+          _buildNewsItemBottom(videoBean),
+          Divider(
+            height: 16,
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildNewsItemBottom(VideoBean videoBean) {
+    bool isVideo = videoBean?.videoId != null;
+    bool isImage = videoBean.middleImage?.url != null;
+    if (isVideo) {
+      return _buildVideoImage(videoBean);
+    } else if (isImage) {
+      return _buildImageList(videoBean);
+    }
+    return Container();
+  }
+
+  Widget _buildImageList(VideoBean videoBean) {
+    return Row(
+      children: videoBean.largeImageList
+              ?.map((value) => Expanded(
+                    child: _buildImage(value.url),
+                  ))
+              ?.toList() ??
+          List<Widget>(),
+    );
+  }
+
+  Widget _buildImage(String url) {
+    return CachedNetworkImage(
+      imageUrl: url ?? '',
+      placeholder: (context, url) => CircularProgressIndicator(),
+      errorWidget: (context, url, error) => Icon(Icons.error),
+      fit: BoxFit.fitWidth,
+    );
+  }
+
+  Widget _buildVideoImage(VideoBean videoBean) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.only(top: 12.0),
+          width: double.infinity,
+          child: _buildImage(videoBean.middleImage?.url),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 90.0),
+          child: Center(
+              child: ClipOval(
+            child: Container(
+              color: Colors.black12,
+              child: Icon(
+                Icons.play_arrow,
+                size: 60.0,
+                color: Colors.white70,
+              ),
+            ),
+          )),
+        ),
+        Positioned(
+          bottom: 0.0,
+          child: Container(
+            color: Colors.black26,
+            padding: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
+            child: Text(
+              videoBean.title ?? '',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

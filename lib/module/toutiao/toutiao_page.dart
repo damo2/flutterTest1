@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/common/base/_base_widget.dart';
+import 'package:flutter_demo/module/toutiao/page/news_hot_page.dart';
 import 'package:flutter_demo/module/toutiao/page/video_page.dart';
 
 class ToutiaoPage extends BaseWidget {
@@ -51,13 +52,11 @@ class _ToutiaoPageState extends BaseWidgetState<ToutiaoPage>
   void initState() {
     super.initState();
     _tabList = [
+      Tab(text: "新闻热点"),
       Tab(text: "视频"),
-      Tab(text: "发现"),
-      Tab(text: "精选"),
     ];
     _pageList = [
-      VideoPage(),
-      VideoPage(),
+      NewHotPage(),
       VideoPage(),
     ];
     mTabController = TabController(vsync: this, length: _tabList.length);
