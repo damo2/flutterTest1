@@ -24,11 +24,12 @@ class MainPageWidget extends StatefulWidget {
 class MainPageState extends State<MainPageWidget> {
   int _tabIndex = 0;
   var tabImages;
-  var appBarTitles = ['豆瓣', '图虫', '头条', '哔哩'];
+  var appBarTitles;
 
   List<Widget> _pageList;
 
   void initData() {
+    appBarTitles = ['豆瓣', '图虫', '头条', '哔哩', '抖音'];
     tabImages = [
       [
         getTabImage('assets/main_tab_douban.png'),
@@ -46,6 +47,10 @@ class MainPageState extends State<MainPageWidget> {
         getTabImage('assets/main_tab_bilibili.png'),
         getTabImage('assets/main_tab_bilibili.png', color: Colors.blue)
       ],
+      [
+        getTabImage('assets/main_tab_douyin.png'),
+        getTabImage('assets/main_tab_douyin.png', color: Colors.blue)
+      ],
     ];
 
     _pageList = [
@@ -53,6 +58,7 @@ class MainPageState extends State<MainPageWidget> {
       TuchongPage(),
       ToutiaoPage(),
       BilibiliPage(),
+      DouyinPage(),
     ];
   }
 
@@ -97,6 +103,7 @@ class MainPageState extends State<MainPageWidget> {
           BottomNavigationBarItem(icon: getTabIcon(1), title: getTabTitle(1)),
           BottomNavigationBarItem(icon: getTabIcon(2), title: getTabTitle(2)),
           BottomNavigationBarItem(icon: getTabIcon(3), title: getTabTitle(3)),
+          BottomNavigationBarItem(icon: getTabIcon(4), title: getTabTitle(4)),
         ],
         type: BottomNavigationBarType.shifting,
         currentIndex: _tabIndex,

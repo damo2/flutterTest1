@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:chewie/chewie.dart';
 import 'package:flutter_demo/common/base/_base_widget.dart';
 import 'package:flutter_demo/common/package_common.dart';
@@ -38,9 +40,11 @@ class _DouyinPageState extends BaseWidgetState<DouyinPage>
   Future requestNet(bool isRefresh) {
     return HttpUtil.get(
       ApiDouyin.HotSearch,
+      headers: {'User-Agent': 'Mozilla/5.0'},
+      isFromData: false
     ).then((value) {
       setState(() {
-        FeedBean douyinBean = FeedBean.fromJson(value);
+        FeedBean douyinBean = FeedBean.fromJson(json.decode(value));
         if (isRefresh == true) {
           _dataList.clear();
         }
@@ -52,10 +56,7 @@ class _DouyinPageState extends BaseWidgetState<DouyinPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: (){
-          requestNet(true);
-        },
+      body: Container(
         child: Swiper(
           itemBuilder: (BuildContext context, int index) {
             return Chewie(
@@ -76,7 +77,7 @@ class _DouyinPageState extends BaseWidgetState<DouyinPage>
 
     ChewieController chewieController = ChewieController(
       videoPlayerController: videoPlayerController,
-      aspectRatio: 9/16,
+      aspectRatio: 9 / 16,
       autoPlay: true,
       looping: true,
     );
