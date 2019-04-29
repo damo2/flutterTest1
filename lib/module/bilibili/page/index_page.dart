@@ -109,7 +109,7 @@ class _IndexPageState extends BaseWidgetState<IndexPage>
     return Card(
       child: InkWell(
         onTap: () {
-          String linkUrl = 'https://m.bilibili.com/video/av${indexDouga.aid}.html';
+          String linkUrl = 'https://www.bilibili.com/video/av${indexDouga.aid}';
           try {
             linkUrl = indexDouga.redirectUrl;
           } catch (e) {}
