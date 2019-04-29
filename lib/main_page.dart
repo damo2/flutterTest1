@@ -43,8 +43,8 @@ class MainPageState extends State<MainPageWidget> {
         getTabImage('assets/main_tab_toutiao.png', color: Colors.blue)
       ],
       [
-        getTabImage('assets/main_tab_toutiao.png'),
-        getTabImage('assets/main_tab_toutiao.png', color: Colors.blue)
+        getTabImage('assets/main_tab_bilibili.png'),
+        getTabImage('assets/main_tab_bilibili.png', color: Colors.blue)
       ],
     ];
 
